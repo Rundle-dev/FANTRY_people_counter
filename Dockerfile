@@ -9,10 +9,13 @@ RUN /root/miniconda3/bin/conda install -y opencv
 RUN mkdir -p /opt/analysis/
 WORKDIR /opt/analysis/
 RUN git clone https://github.com/AlexeyAB/darknet.git
-WORKDIR /opt/analysois/darknet
-RUN sed -i "s|GPU=0|GPU=1|g" Makefile_copy
-RUN sed -i "s|CUDNN=0|CUDNN=1|g" Makefile_copy
-RUN sed -i "s|LIBSO=0|LIBSO=1|g" Makefile_copy
+WORKDIR /opt/analysis/darknet
+RUN sed -i "s|GPU=0|GPU=1|g" Makefile
+RUN sed -i "s|CUDNN=0|CUDNN=1|g" Makefile
+RUN sed -i "s|LIBSO=0|LIBSO=1|g" Makefile
 RUN make
 RUN wget https://raw.githubusercontent.com/AlexeyAB/darknet/master/cfg/yolov4.cfg
 RUN wget https://github.com/AlexeyAB/darknet/releases/download/darknet_yolo_v3_optimal/yolov4.weights
+
+RUN mkdir /share
+WORKDIR /share
