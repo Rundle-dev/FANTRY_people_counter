@@ -58,7 +58,7 @@ def stream_detection(videopath, fps):
     idx = 0
     num_people = []
     while True:
-        ret, frame = cap.read()
+        _, frame = cap.read()
         if idx == 0:
             objects = detect_objects(frame)
             objects_extracted = extract_objects(objects)
@@ -67,10 +67,4 @@ def stream_detection(videopath, fps):
         if idx >= interval:
             idx = 0
     cap.release()
-    return sum(num_people)
-
-
-if __name__ == "__main__":
-    videopath = "/share/TownCentreXVID.avi"
-    num_people = stream_detection(videopath, 0.2)
-    print(num_people)
+    return num_people
