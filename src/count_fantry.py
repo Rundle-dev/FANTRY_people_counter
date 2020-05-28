@@ -1,79 +1,52 @@
 import numpy as np
+import pandas as pd
 import os
 import glob
+import argparse
 import datetime
 import subprocess
-# import counter
+import counter
 
 
-def hourly_downloader(date, camid):
-    date = sdate
-    hourly_aws_cli(date, date, camid)
-    ndate = date + datetime.timedelta(seconds=3600)
-    if date.hour == 23:
-        # search next day
-        hourly_aws_cli(ndate, date, camid)
-
-
-def hourly_aws_cli(dir_date, file_date, camid, outroot="./"):
-    outdir = os.path.join(outroot, dir_date.strftime("%Y-%m-%d"))
-    if not os.path.exists(outdir):
-        os.makedirs(outdir)
-    fname = "{0}??00-{0}??00-{1}.mp4.enc".format(file_date.strftime("%y%m%d%H"),
-                                                 camid)
-    command = ["aws", "s3", "cp", "--recursive",
-                "s3://fantry-videos-prod/{0}/".format(dir_date.strftime("%Y-%m-%d")),
-                outdir,
-                "--exclude", "*",
-                "--include", "{0}".format(fname),
-                "--profile", "fantry-prod"]
-    subprocess.check_call(command)
-    # for 59:00 - 00:00
-    ndate = file_date + datetime.timedelta(seconds=3600)
-    fname_l = "{0}5900-{1}0000-{2}.mp4.enc".format(file_date.strftime("%y%m%d%H"),
-                                                   ndate.strftime("%y%m%d%H"),
-                                                   camid)
-    command_l = ["aws", "s3", "cp", "--recursive",
-                 "s3://fantry-videos-prod/{0}/".format(dir_date.strftime("%Y-%m-%d")),
-                 outdir,
-                 "--exclude", "*",
-                 "--include", "{0}".format(fname_l),
-                 "--profile", "fantry-prod"]
-    subprocess.check_call(command_l)
-
-
-def batch_decrypt(date, dataroot="./"):
-    datadir = os.path.join(dataroot, date.strftime("%Y-%m-%d"))
-    paths = glob.glob(datadir + "/*")
-    for path in paths:
-        subprocess.check_call(["python", "decrypt/decrypt.py",
-                               "-i", path, "-c" "decrypt/decrypt.cfg"])
-        subprocess.check_call(["rm", path])
-
-
-def count_person(date, fps=0.2, dataroot="./"):
+def count_person(date, fps=0.2, dataroot="./", coef=60):
     """
-    Currently only returns sum_hourly(mean_minute), which is different from
+    Currently only returns sum_hourly(mean_minute*60), which is different from
     the actual number of people. But still it is good for estimates in magnitudes.
     """
     datadir = os.path.join(dataroot, date.strftime("%Y-%m-%d"))
     paths = sorted(glob.glob(datadir + "/*"))
     n_persons = []
     for path in paths:
-        n_person = np.array(counter.stream_detection(path, fps)).mean()
+        n_person = np.array(counter.stream_detection(path, fps)).mean()*coef
         n_persons.append(n_person)
     return sum(n_persons)
 
 
-def main(sdate, edate, camid):
+def main(sdate, edate, camid, fps, outpath):
     date = sdate
+    dates = []
+    nums = []
     while date < edate:
-        hourly_downloader(date, camid)
-        batch_decrypt(date)
-        # n_persons = count_person(date)
+        n_persons = count_person(date, fps=fps)
+        dates.append(date)
+        nums.append(n_persons)
         date = date + datetime.timedelta(seconds=3600)
+    df = pd.DataFrame([dates, nums], columns=["Date", "count"])
+    if os.path.exists(outpath):
+        df.to_csv(outpath, index=False)
+    else:
+        df.to_csv(outpath, index=False, header=False)
+
 
 if __name__ == "__main__":
-    sdate = datetime.datetime(2020, 5, 20, 23)
-    edate = datetime.datetime(2020, 5, 21, 1)
-    main(sdate, edate, 10)
+    parser = argparse.ArgumentParser(description="count a sum of person per frame in videos via YOLOv4")
+    parser.add_argument("--sdate", help="start date [%Y%m%dT%H:%M]", type=str, required=True)
+    parser.add_argument("--edate", help="end date [%Y%m%dT%H:%M]", type=str, required=True)
+    parser.add_argument("--camid", help="camera id", type=int, required=True)
+    parser.add_argument("--fps", help="fps", type=float, default=0.2, required=False)
+    parser.add_argument("-o", "--output", help="output csv file path",
+                        type=str, default="./count.csv", required=False)
+    args = parser.parse_args()
+    sdate = datetime.datetime.strptime(args.sdate, "%Y%m%dT%H:%M")
+    edate = datetime.datetime.strptime(args.edate, "%Y%m%dT%H:%M")
+    main(sdate, edate, args.camid, args.fps, args.output)
