@@ -53,11 +53,12 @@ def draw_image(img, objects):
 def stream_detection(videopath, fps):
     cap = cv2.VideoCapture(videopath)
     fps_cap = cap.get(cv2.CAP_PROP_FPS)
+    num_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
     spf_desired = 1./fps
     interval = fps_cap * spf_desired
     idx = 0
     num_people = []
-    while True:
+    for i in range(num_frames):
         _, frame = cap.read()
         if idx == 0:
             objects = detect_objects(frame)

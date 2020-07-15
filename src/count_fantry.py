@@ -13,11 +13,12 @@ def count_person(date, fps=0.2, dataroot="./", coef=60):
     Currently only returns sum_hourly(mean_minute*60), which is different from
     the actual number of people. But still it is good for estimates in magnitudes.
     """
-    datadir = os.path.join(dataroot, date.strftime("%Y-%m-%d"))
+    datadir = os.path.join(dataroot, date.strftime("%Y-%m-%d"), "{0:02d}".format(date.hour))
     paths = sorted(glob.glob(datadir + "/*"))
     n_persons = []
     for path in paths:
-        n_person = np.array(counter.stream_detection(path, fps)).mean()*coef
+        n_person = np.array(counter.stream_detection(path, fps))
+        n_person = n_person.mean()*fps*coef
         n_persons.append(n_person)
     return sum(n_persons)
 
@@ -31,11 +32,12 @@ def main(sdate, edate, camid, fps, outpath):
         dates.append(date)
         nums.append(n_persons)
         date = date + datetime.timedelta(seconds=3600)
-    df = pd.DataFrame([dates, nums], columns=["Date", "count"])
+    df = pd.DataFrame([dates, nums]).T
+    df.columns = ["Date", "count"]
     if os.path.exists(outpath):
-        df.to_csv(outpath, index=False)
+        df.to_csv(outpath, index=False, header=False, mode="a")
     else:
-        df.to_csv(outpath, index=False, header=False)
+        df.to_csv(outpath, index=False)
 
 
 if __name__ == "__main__":
