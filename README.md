@@ -4,6 +4,10 @@
 Count people on images via [YOLOv4](https://github.com/AlexeyAB/darknet).  
 To reduce computational complexity, images are only evaluated in every 5 seconds.  
   
+## Preparation  
+Place decryption cofiguration (decrypt.cfg) file at src/decrypt/.  
+Edit contents if applicable.  
+  
 ## Usage  
 Download encrypted videos and decode them.  
 ```bash
