@@ -19,7 +19,8 @@ count people on images.
 python count_fantry.py --sdate ${YYYYMMDDTHH:MM} --edate ${YYYYMMDDTHH:MM} --camid ${CAMERA_ID} --output ${OUTPUT_CSV}
 ```
   
-To change an evaluation interval in seconds, add `--fps ${value}` argument. If not specified, fps=0.2 (image/5-seconds) is used.  
+To change an evaluation interval in seconds, add `--fps ${value}` argument.  
+If not specified, fps=0.2 (image/5-seconds) is used.  
   
 ## ToDo  
 - add Bento-4 download/compilation in Dockerfile.  
