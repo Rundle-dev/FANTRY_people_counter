@@ -11,7 +11,7 @@ Edit contents if applicable.
 ## Usage  
 Download encrypted videos and decode them.  
 ```bash
-python python download_fantry.py --sdate ${YYYYMMDDTHH:MM} --edate ${YYYYMMDDTHH:MM} --camid ${CAMERA_ID}
+python download_fantry.py --sdate ${YYYYMMDDTHH:MM} --edate ${YYYYMMDDTHH:MM} --camid ${CAMERA_ID}
 ```
   
 count people on images.  
