@@ -16,5 +16,4 @@ python count_fantry.py --sdate ${YYYYMMDDTHH:MM} --edate ${YYYYMMDDTHH:MM} --cam
 ```
   
 ## ToDo  
-- incorporate decrypt scripts.  
 - add Bento-4 download/compilation in Dockerfile.  
