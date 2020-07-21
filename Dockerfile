@@ -24,4 +24,4 @@ RUN sed -i "s|subdivisions=8|subdivisions=1|g" yolov4.cfg
 RUN wget https://github.com/AlexeyAB/darknet/releases/download/darknet_yolo_v3_optimal/yolov4.weights
 
 WORKDIR /opt/analysis/
-RUN git clone git@github.com:windsor718/FANTRY_people_counter.git
+RUN git clone https://github.com/windsor718/FANTRY_people_counter.git
