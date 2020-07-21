@@ -4,7 +4,7 @@ import cv2
 
 YOLO_CONFIG_PATH = b"/opt/analysis/darknet/yolov4.cfg"
 YOLO_WEIGHTS_PATH = b"/opt/analysis/darknet/yolov4.weights"
-YOLO_COCO_DATA_PATH = b"/share/coco.data"
+YOLO_COCO_DATA_PATH = b"/opt/analysis/FANTRY_people_counter/src/coco.data"
 
 model_yolo_net = darknet.load_net(YOLO_CONFIG_PATH,
                                   YOLO_WEIGHTS_PATH, 0)

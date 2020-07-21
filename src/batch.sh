@@ -10,7 +10,7 @@ for CAMID in 10 11;do
     while [ ${diff} -ge 86400 ]; do
         echo ${date}
         ndate=`date --date "${date} 1 days" +%Y%m%d`
-        python ./download_fantry.py --sdate ${date}T23:00 --edate ${ndate}T01:00 --camid ${CAMID}
+        #python ./download_fantry.py --sdate ${date}T23:00 --edate ${ndate}T01:00 --camid ${CAMID}
         docker exec -i ${CONTAINER_NAME} /root/miniconda3/bin/python ./count_fantry.py --sdate ${date}T23:00 --edate ${ndate}T01:00 --camid ${CAMID} --output count_${CAMID}.csv
         diff=$((`date --date "${ENDDATE}" +%s` - `date --date "${date}" +%s`))
         date=${ndate}

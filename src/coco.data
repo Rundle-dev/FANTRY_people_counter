@@ -1,6 +1,6 @@
 classes= 80
 train  = /home/pjreddie/data/coco/trainvalno5k.txt
 valid  = coco_testdev
-names = /share/coco.names
+names = /opt/analysis/FANTRY_people_counter/src/coco.names
 backup = /home/pjreddie/backup/
 eval=coco
