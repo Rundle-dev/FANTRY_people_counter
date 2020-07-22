@@ -23,5 +23,7 @@ python count_fantry.py --sdate ${YYYYMMDDTHH:MM} --edate ${YYYYMMDDTHH:MM} --cam
 To change an evaluation interval in seconds, add `--fps ${value}` argument.  
 If not specified, fps=0.2 (image/5-seconds) is used.  
   
-## ToDo  
-- add Bento-4 download/compilation in Dockerfile.  
+## Notes  
+- aws cli command is used in the scripts. A configuration (--profile fantry-prod) is needed.  
+- Usual runtime for an 1-hr video is 8min.  
+- Data size is 600MB/hr.  
