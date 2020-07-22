@@ -23,6 +23,11 @@ python count_fantry.py --sdate ${YYYYMMDDTHH:MM} --edate ${YYYYMMDDTHH:MM} --cam
 To change an evaluation interval in seconds, add `--fps ${value}` argument.  
 If not specified, fps=0.2 (image/5-seconds) is used.  
   
+Or just use batch script to do them both:  
+```bash
+sh batch.sh
+```
+  
 ## Notes  
 - aws cli command is used in the scripts. A configuration (--profile fantry-prod) is needed.  
 - Usual runtime for an 1-hr video is 8min.  
