@@ -23,7 +23,7 @@ python count_fantry.py --sdate ${YYYYMMDDTHH:MM} --edate ${YYYYMMDDTHH:MM} --cam
 To change an evaluation interval in seconds, add `--fps ${value}` argument.  
 If not specified, fps=0.2 (image/5-seconds) is used.  
   
-Or just use batch script to do them both:  
+Or just use a batch script to do them both:  
 ```bash
 sh batch.sh
 ```
