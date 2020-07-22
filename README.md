@@ -28,7 +28,7 @@ sh batch.sh
 ```
   
 ## Notes  
-- work with minimal via the instance type x3s.large  
+- work with minimal configuration via the instance type g3s.xlarge.  
 - aws cli command is used in the scripts. A configuration (--profile fantry-prod) is needed.  
 - Usual runtime for an 1-hr video is 7-8min.  
 - Data size is 600MB/hr.  
